@@ -2,12 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>Ninja_Tests</groupId>
   <artifactId>Ninja_Tests</artifactId>
+
   <version>0.0.1-SNAPSHOT</version>
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
     </properties>
-    <dependencies>
+
+<dependencies>
   <dependency>
     <groupId>org.seleniumhq.selenium</groupId>
     <artifactId>selenium-java</artifactId>
@@ -29,10 +31,20 @@
     <version>5.2.2</version>
 </dependency>
 
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.14.1</version>
+    </dependency>
+
+
+
 <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>
     <artifactId>jackson-databind</artifactId>
     <version>2.15.0</version>
 </dependency>
 </dependencies>
+
+
 </project>
