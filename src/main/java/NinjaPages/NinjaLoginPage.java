@@ -5,8 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class NinjaLoginPage implements ILoginPage {
-    private WebDriver driver;
+public class NinjaLoginPage extends BasePage implements ILoginPage {
 
     private final String successfullyLoginUrl = NinjaWebConsts.myAccountUrl;
 
@@ -18,11 +17,11 @@ public class NinjaLoginPage implements ILoginPage {
     private WebElement tfEmail;
     @FindBy(id = "input-password")
     private WebElement tfPassword;
-    @FindBy(xpath = "//*[@id=\\\"content\\\"]/div/div[2]/div/form/input")
+    @FindBy(xpath = "//*[@id=\"content\"]/div/div[2]/div/form/input")
     private WebElement btnLogin;
 
     public NinjaLoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     @Override
