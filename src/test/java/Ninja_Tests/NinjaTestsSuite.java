@@ -4,8 +4,10 @@ package Ninja_Tests;
 
 import NinjaPages.NinjaAddToCart;
 import NinjaPages.NinjaLoginPage;
+import NinjaPages.NinjaRegisterPage;
 import PagesContract.IAddToCartPage;
 import PagesContract.ILoginPage;
+import PagesContract.IRegisterPage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,29 +52,25 @@ public class NinjaTestsSuite {
     }
 
     // function to success register:
-    //@Test
+    @Test
     public void register() {
-        // Test name: Register test
-        // Step # | name | target | value
-        // 1 | open site
-        driver.get("https://tutorialsninja.com/demo/index.php?route=common/home");
-        // 2 | setWindowSize | 1052x666 |
-        driver.findElement(By.xpath("//*[@id=\"top-links\"]/ul/li[2]/a")).click();
-        //driver.manage().window().setSize(new Dimension(1052, 666));
-        // 3 | type | name=q | hello
-        driver.findElement(By.xpath("//*[@id=\"top-links\"]/ul/li[2]/ul/li[1]/a")).click();
+        logger.debug("Starting Register Test");
+        IRegisterPage ninjaRegisterPage = new NinjaRegisterPage(driver);
 
-        // Enter user name details:
-        driver.findElement(By.id("input-firstname")).sendKeys("standard_user"); // input first name
-        driver.findElement(By.id("input-lastname")).sendKeys("standard_user"); // input last name
-        driver.findElement(By.id("input-email")).sendKeys("standard_user@gmail.com"); // input email
-        driver.findElement(By.id("input-telephone")).sendKeys("standard_user"); // input telephone
-        driver.findElement(By.id("input-password")).sendKeys("standard_user"); // input password
-        driver.findElement(By.id("input-confirm")).sendKeys("standard_user"); // confirm password
-        driver.findElement(By.name("agree")).click(); // click on agree checkbox
-        driver.findElement(By.xpath("//*[@id=\"content\"]/form/div/div/input[2]")).click(); // click on continue button
-        // should be navigated to success url:
-        Assert.assertTrue(driver.getCurrentUrl().equals("https://tutorialsninja.com/demo/index.php?route=account/success"));
+        logger.debug("Reading test inputs from json");
+        var testInputs = jsonReader.read("src/test/resources/RegisterTestInput.json");
+
+        logger.debug("Navigating to registration page");
+        ninjaRegisterPage.navigateToRegistrationPage();
+
+        logger.debug("Filling registration details");
+        ninjaRegisterPage.fillRegistrationDetails(testInputs);
+
+        logger.debug("Clicking register");
+        ninjaRegisterPage.clickRegister();
+
+        logger.debug("Verify successfully registration");
+        Assert.assertTrue(ninjaRegisterPage.isRegisterSuccessfully());
     }
 
     @Test
@@ -81,7 +79,7 @@ public class NinjaTestsSuite {
         ILoginPage ninjaLoginPage = new NinjaLoginPage(driver);
 
         logger.debug("Reading test inputs from json");
-        var testInputs = jsonReader.read("src/test/resources/RegisterTestInput.json");
+        var testInputs = jsonReader.read("src/test/resources/LoginTestInput.json");
 
         logger.debug("Navigating to login form");
         ninjaLoginPage.navigateToLoginForm();
@@ -117,10 +115,10 @@ public class NinjaTestsSuite {
 
         // read JSON file into a map
         logger.debug("Starting Purchase Tests");
-        List<Map<?, ?>> map;
+        Map<?, ?> map;
         try {
             logger.debug("Reading input file");
-            map = mapper.readValue(Paths.get("src/test/resources/RegisterTestInput.json").toFile(), List.class);
+            map = mapper.readValue(Paths.get("src/test/resources/PurchaseTestInput.json").toFile(), Map.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -168,7 +166,7 @@ public class NinjaTestsSuite {
             e.printStackTrace();
         }
         // enter billing address
-        var inputData = map.get(0);
+        var inputData = map;
 
         logger.debug("Entering billing address");
         logger.trace("Input : {}", inputData);
